@@ -36,6 +36,34 @@ def construct_graph_from_file(graph, file_path):
     2. for each following line (from second line to last line), add them as edge to graph
     3. return the graph
     """
+    openFile = open(file_path)
+    readFile = openFile.read()
+    splitReadFile = readFile.split("\n")
+    lineSplit = [line.split(":") for line in splitReadFile if line != ""]
+    
+    numberOfNodes = int(lineSplit[0][0]) # first line = number of nodes
+
+    for node in range(0, numberOfNodes): # create and add nodes to graph
+        graph.add_node(Node(node) )
+
+    for lineNumber in range(1, len(lineSplit) ): # start from 1 since first line is number of nodes
+        lineLength = len(lineSplit[lineNumber])
+        lineOffset = ((lineNumber - 1) % lineLength) # 0, 1, 2, ..., i
+        
+        fromNodeIndex = 0
+        toNodeIndex = 1
+        weightIndex = 2
+        
+        fromNode = lineSplit[lineNumber][fromNodeIndex]
+        toNode = lineSplit[lineNumber][toNodeIndex]
+        weight = lineSplit[lineNumber][weightIndex]
+        
+        #edge = Edge(fromNode, toNode, weight)
+        #graph.add_edge(edge)
+        graph.add_edge(Edge(fromNode, toNode, weight) )
+
+    openFile.close()
+    
     return graph
 
 class Node(object):
@@ -148,14 +176,27 @@ class ObjectOriented(object):
         pass
 
     def add_node(self, node):
-        pass
+        if node in self.nodes:
+            self.nodes.append(node)
+            return False
+        else:
+            self.nodes.append(node)
+            return True
 
     def remove_node(self, node):
-        pass
+        if node in self.nodes:
+            self.nodes.remove(node)
+            return True
+        else:
+            return False
 
     def add_edge(self, edge):
-        pass
+        if edge in self.edges:
+            return False
+        else:
+            self.edges.append(edge)
+            return True
 
     def remove_edge(self, edge):
-        pass
+        self.edges.append(edge)
 
