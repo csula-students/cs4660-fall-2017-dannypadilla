@@ -166,9 +166,9 @@ class ObjectOriented(object):
 
     def adjacent(self, node_1, node_2): # passes test but clean this up.... 
         for edge in self.edges:
-            if edge.from_node == node_1 and edge.to_node == node_2:
+            if(edge.from_node == node_1 and edge.to_node == node_2):
                 return True
-            elif edge.from_node == node_2 and edge.to_node == node_1:
+            elif(edge.from_node == node_2 and edge.to_node == node_1):
                 return True
         return False
 
@@ -180,28 +180,31 @@ class ObjectOriented(object):
         return nodeNeighbors
 
     def add_node(self, node):
-        if node in self.nodes:
+        if(node in self.nodes):
             return False
         else:
             self.nodes.append(node)
             return True
 
     def remove_node(self, node): # have to remove edges too
-        if node in self.nodes:
+        if(node in self.nodes):
             self.nodes.remove(node)
+            for edge in self.edges:
+                if(edge.from_node == node or edge.to_node == node):
+                    self.edges.remove(edge)
             return True
         else:
             return False
 
     def add_edge(self, edge):
-        if edge in self.edges:
+        if(edge in self.edges):
             return False
         else:
             self.edges.append(edge)
             return True
 
     def remove_edge(self, edge):
-        if edge in self.edges:
+        if(edge in self.edges):
             self.edges.remove(edge)
             return True
         else:
