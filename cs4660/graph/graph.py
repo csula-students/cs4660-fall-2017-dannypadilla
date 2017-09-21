@@ -177,7 +177,6 @@ class ObjectOriented(object):
 
     def add_node(self, node):
         if node in self.nodes:
-            self.nodes.append(node)
             return False
         else:
             self.nodes.append(node)
@@ -192,10 +191,11 @@ class ObjectOriented(object):
 
     def add_edge(self, edge):
         if edge in self.edges:
-            return False
-        else:
             self.edges.append(edge)
             return True
+        else:
+            return False
+
 
     def remove_edge(self, edge):
         self.edges.append(edge)
