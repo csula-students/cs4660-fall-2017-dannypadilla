@@ -47,20 +47,15 @@ def construct_graph_from_file(graph, file_path):
         graph.add_node(Node(node) )
 
     for lineNumber in range(1, len(lineSplit) ): # start from 1 since first line is number of nodes
-        lineLength = len(lineSplit[lineNumber])
-        lineOffset = ((lineNumber - 1) % lineLength) # 0, 1, 2, ..., i
+        fromNodeIndex = 0 # just in case
+        toNodeIndex = 1 # this ever needs
+        weightIndex = 2 # to change...
         
-        fromNodeIndex = 0
-        toNodeIndex = 1
-        weightIndex = 2
+        fromNode = int(lineSplit[lineNumber][fromNodeIndex]) # cast to int; otherwise it's a str
+        toNode = int(lineSplit[lineNumber][toNodeIndex])
+        weight = int(lineSplit[lineNumber][weightIndex])
         
-        fromNode = lineSplit[lineNumber][fromNodeIndex]
-        toNode = lineSplit[lineNumber][toNodeIndex]
-        weight = lineSplit[lineNumber][weightIndex]
-        
-        #edge = Edge(fromNode, toNode, weight)
-        #graph.add_edge(edge)
-        graph.add_edge(Edge(fromNode, toNode, weight) )
+        graph.add_edge(Edge(Node(fromNode), Node(toNode), weight ) )
 
     openFile.close()
     
@@ -169,11 +164,20 @@ class ObjectOriented(object):
         self.edges = []
         self.nodes = []
 
-    def adjacent(self, node_1, node_2):
-        pass
+    def adjacent(self, node_1, node_2): # passes test but clean this up.... 
+        for edge in self.edges:
+            if edge.from_node == node_1 and edge.to_node == node_2:
+                return True
+            elif edge.from_node == node_2 and edge.to_node == node_1:
+                return True
+        return False
 
     def neighbors(self, node):
-        pass
+        nodeNeighbors = []
+        for edge in self.edges:
+            if(node == edge.from_node):
+                nodeNeighbors.append(edge.to_node)
+        return nodeNeighbors
 
     def add_node(self, node):
         if node in self.nodes:
@@ -182,7 +186,7 @@ class ObjectOriented(object):
             self.nodes.append(node)
             return True
 
-    def remove_node(self, node):
+    def remove_node(self, node): # have to remove edges too
         if node in self.nodes:
             self.nodes.remove(node)
             return True
@@ -191,12 +195,15 @@ class ObjectOriented(object):
 
     def add_edge(self, edge):
         if edge in self.edges:
+            return False
+        else:
             self.edges.append(edge)
+            return True
+
+    def remove_edge(self, edge):
+        if edge in self.edges:
+            self.edges.remove(edge)
             return True
         else:
             return False
-
-
-    def remove_edge(self, edge):
-        self.edges.append(edge)
 
