@@ -109,19 +109,38 @@ class AdjacencyList(object):
         self.adjacency_list = {}
 
     def adjacent(self, node_1, node_2):
-        pass
+        if(node_1 in self.adjacency_list and node_2 in self.adjacency_list):
+            for edge in self.adjacency_list[node_1]:
+                if(edge.from_node == node_1 and edge.to_node == node_2):
+                    return True
+            return False # didn't find adjacent nodes, though they did exist in list
+        else:
+            return False
 
     def neighbors(self, node):
         pass
 
     def add_node(self, node):
-        pass
+        if node in self.adjacency_list:
+            return False
+        else:
+            self.adjacency_list[node] = []
+            return True
 
     def remove_node(self, node):
         pass
 
-    def add_edge(self, edge):
-        pass
+    def add_edge(self, edge): # # need to implement adjacent first
+        fromNode = edge.from_node
+        toNode = edge.to_node
+        if(fromNode in self.adjacency_list and toNode in self.adjacency_list):
+            if(edge in self.adjacency_list[fromNode]): # checks of edge already exists in list
+                return False
+            else:
+                self.adjacency_list[fromNode].append(edge)
+                return True
+        else:
+            return False
 
     def remove_edge(self, edge):
         pass
