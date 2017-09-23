@@ -207,7 +207,18 @@ class AdjacencyMatrix(object):
             return False
 
     def remove_edge(self, edge):
-        pass
+        if(edge.from_node in self.nodes and edge.to_node in self.nodes):
+            # find index of from/to node in node list (respectively ;) )
+            fromNodeIndex = self.nodes.index(edge.from_node)
+            toNodeIndex = self.nodes.index(edge.to_node)
+            # set weight to that row/column index
+            if(self.adjacency_matrix[fromNodeIndex][toNodeIndex] == 0):
+                return False
+            else:
+                self.adjacency_matrix[fromNodeIndex][toNodeIndex] = 0
+                return True
+        else:
+            return False
 
     def __get_node_index(self, node): # I'll implement this if I have time to rewrite
         """helper method to find node index"""
