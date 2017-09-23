@@ -136,13 +136,25 @@ class AdjacencyMatrix(object):
         self.nodes = []
 
     def adjacent(self, node_1, node_2):
-        pass
+        if( (node_1 in self.nodes) and (node_2 in self.nodes) ):
+            fromNodeIndex = self.nodes.index(node_1)
+            toNodeIndex = self.nodes.index(node_2)
+            if(self.adjacency_matrix[fromNodeIndex][toNodeIndex] > 0):
+                return True
+            else:
+                return False
+        else:
+            return False
 
     def neighbors(self, node):
         if node in self.nodes:
+            neighborsList = []
             index = self.nodes.index(node)
-            # add edge here? or return a list of edges?
-            return self.adjacency_matrix[index]
+            #neighborsList = [Node(item) for item in self.adjacency_matrix[index] if item > 0]
+            for column in range(0, len(self.adjacency_matrix[index]) ):
+                if(self.adjacency_matrix[index][column] > 0):
+                    neighborsList.append(Node(column) )
+            return neighborsList
         else:
             return []
 
@@ -156,13 +168,11 @@ class AdjacencyMatrix(object):
             self.adjacency_matrix.append([0] * len(self.nodes) ) # add an empty row for the new node to adj_matrix list
             return True
 
-    def remove_node(self, node): ## need to implement add_edge first...I think
+    def remove_node(self, node):
         # check if in nodes list
         if node in self.nodes:
             # get row / column index of node
             index = self.nodes.index(node)
-            print("\n###############################################", index, "\n")
-            print("\n########################################## LEN ", len(self.adjacency_matrix), "\n")
             
             #remove node from nodes list
             self.nodes.remove(node)
@@ -179,25 +189,32 @@ class AdjacencyMatrix(object):
             return True
         else:
             return False
-        # remove row and column
 
     def add_edge(self, edge):
-        # get weight of edge
-        weight = edge.weight
-        # find index of node1 in nodeList (nodes)
-        fromNodeIndex = self.nodes.index(edge.from_node)
-        # find index of node2 in nodeList (nodes)
-        toNode2Index = self.nodes.index(edge.to_node)
-        
-        #self.adjacency_matrix.append()
-        pass
+        if(edge.from_node in self.nodes and edge.to_node in self.nodes):
+            # get weight of edge
+            weight = edge.weight
+            # find index of from/to node in node list (respectively ;) )
+            fromNodeIndex = self.nodes.index(edge.from_node)
+            toNodeIndex = self.nodes.index(edge.to_node)
+            # set weight to that row/column index
+            if(self.adjacency_matrix[fromNodeIndex][toNodeIndex] == weight):
+                return False
+            else:
+                self.adjacency_matrix[fromNodeIndex][toNodeIndex] = weight
+            return True
+        else:
+            return False
 
     def remove_edge(self, edge):
         pass
 
-    def __get_node_index(self, node):
+    def __get_node_index(self, node): # I'll implement this if I have time to rewrite
         """helper method to find node index"""
-        pass
+        if(node in self.nodes):
+            return self.nodes.index(node)
+        else:
+            return None
 
 class ObjectOriented(object):
     """ObjectOriented defines the edges and nodes as both list"""
