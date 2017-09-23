@@ -118,7 +118,13 @@ class AdjacencyList(object):
             return False
 
     def neighbors(self, node):
-        pass
+        neighborsList = []
+        if(node in self.adjacency_list):
+            for edge in self.adjacency_list[node]:
+                neighborsList.append(edge.to_node)
+            return neighborsList
+        else:
+            return []
 
     def add_node(self, node):
         if node in self.adjacency_list:
@@ -130,7 +136,7 @@ class AdjacencyList(object):
     def remove_node(self, node):
         pass
 
-    def add_edge(self, edge): # # need to implement adjacent first
+    def add_edge(self, edge): # # need to implement neighbors first
         fromNode = edge.from_node
         toNode = edge.to_node
         if(fromNode in self.adjacency_list and toNode in self.adjacency_list):
