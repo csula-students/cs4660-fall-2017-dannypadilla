@@ -22,4 +22,3 @@ def get_sum(li):
 def get_avg(li):
     """Returns the average of the list items"""
     return get_sum(li) / len(li)
-
