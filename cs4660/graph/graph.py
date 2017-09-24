@@ -121,22 +121,34 @@ class AdjacencyList(object):
         neighborsList = []
         if(node in self.adjacency_list):
             for edge in self.adjacency_list[node]:
-                neighborsList.append(edge.to_node)
+                neighborsList.append(edge.to_node) # populate list with neighbor nodes
             return neighborsList
         else:
             return []
 
     def add_node(self, node):
-        if node in self.adjacency_list:
+        if node in self.adjacency_list: # check if it already exists
             return False
         else:
-            self.adjacency_list[node] = []
+            self.adjacency_list[node] = [] # empty list is initial state
             return True
 
     def remove_node(self, node):
-        pass
+        deleted = False
+        if node in self.adjacency_list:
+            del self.adjacency_list[node]
+            deleted = True
+        for line in self.adjacency_list:
+            for edge in range(len(self.adjacency_list[line])):
+                if self.adjacency_list[line][edge - 1].to_node == node:
+                    del self.adjacency_list[line][edge]
+                    deleted = True
+        return deleted
+        # need to search and remove edges that have the node too.........
+        ## that means toNode...........
+        # has to be a better way than double for loops
 
-    def add_edge(self, edge): # # need to implement neighbors first
+    def add_edge(self, edge):
         fromNode = edge.from_node
         toNode = edge.to_node
         if(fromNode in self.adjacency_list and toNode in self.adjacency_list):
@@ -145,7 +157,7 @@ class AdjacencyList(object):
             else:
                 self.adjacency_list[fromNode].append(edge)
                 return True
-        else:
+        else: # one of the nodes doesn't exist in adj list
             return False
 
     def remove_edge(self, edge):
@@ -154,9 +166,9 @@ class AdjacencyList(object):
             if(edge in self.adjacency_list[fromNode]):
                 self.adjacency_list[fromNode].remove(edge)
                 return True
-            return False
+            return False # edge doesn't exist in adj list, but fromNode does
         else:
-            return False
+            return False # fromNode doesn't exist in adj list
 
 class AdjacencyMatrix(object):
     def __init__(self):
