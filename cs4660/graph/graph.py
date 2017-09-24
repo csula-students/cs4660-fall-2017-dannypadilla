@@ -149,7 +149,14 @@ class AdjacencyList(object):
             return False
 
     def remove_edge(self, edge):
-        pass
+        fromNode = edge.from_node
+        if(fromNode in self.adjacency_list):
+            if(edge in self.adjacency_list[fromNode]):
+                self.adjacency_list[fromNode].remove(edge)
+                return True
+            return False
+        else:
+            return False
 
 class AdjacencyMatrix(object):
     def __init__(self):
