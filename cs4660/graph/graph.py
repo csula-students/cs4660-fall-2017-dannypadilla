@@ -170,6 +170,9 @@ class AdjacencyList(object):
         else:
             return False # fromNode doesn't exist in adj list
 
+    def distance(self, node_1, node_2):
+        pass
+
 class AdjacencyMatrix(object):
     def __init__(self):
         # adjacency_matrix should be a two dimensions array of numbers that
@@ -264,6 +267,9 @@ class AdjacencyMatrix(object):
         else:
             return False
 
+    def distance(self, node_1, node_2):
+        pass
+
     def __get_node_index(self, node): # I'll implement this if I have time to rewrite
         """helper method to find node index"""
         if(node in self.nodes):
@@ -321,4 +327,7 @@ class ObjectOriented(object):
             return True
         else:
             return False
+
+    def distance(self, node_1, node_2):
+        pass
 
