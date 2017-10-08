@@ -278,10 +278,9 @@ class ObjectOriented(object):
         self.edges = []
         self.nodes = []
 
-    def adjacent(self, node_1, node_2): # passes test but clean this up.... 
+    def adjacent(self, node_1, node_2):
         for edge in self.edges:
-            if(edge.from_node == node_1 and edge.to_node == node_2 or
-            edge.from_node == node_2 and edge.to_node == node_1):
+            if(edge.from_node == node_1 and edge.to_node == node_2): # only checks one way now
                 return True
         return False
 
