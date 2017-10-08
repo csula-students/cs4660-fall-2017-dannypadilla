@@ -170,8 +170,21 @@ class AdjacencyList(object):
         else:
             return False # fromNode doesn't exist in adj list
 
+    def get_edge(self, node_1, node_2): # returns edge without checking/comparing weight
+        if(node_1 in self.adjacency_list and node_2 in self.adjacency_list):
+            for edge in self.adjacency_list[node_1]:
+                if(edge.from_node == node_1 and edge.to_node == node_2):
+                    return edge
+            return None # didn't find adjacent nodes, though they did exist in list
+        else:
+            return None
+
     def distance(self, node_1, node_2):
-        pass
+        edge = get_edge(node_1, node_2)
+        if(edge != None):
+            return edge
+        else:
+            return None
 
 class AdjacencyMatrix(object):
     def __init__(self):
@@ -267,8 +280,24 @@ class AdjacencyMatrix(object):
         else:
             return False
 
+    def get_edge(self, node_1, node_2): # returns edge without checking/comparing weight
+        if( (node_1 in self.nodes) and (node_2 in self.nodes) ):
+            from_node_index = self.nodes.index(node_1)
+            to_node_index = self.nodes.index(node_2)
+            weight = self.adjacency_matrix[from_node_index][to_node_index] # index must exist since if-statement checked..
+            if(weight > 0):
+                return Edge(node_1, node_2, weight) # creates an Edge object just for this, though they don't exists (aren't needed) in this class
+            else:
+                return None
+        else:
+            return None
+        
     def distance(self, node_1, node_2):
-        pass
+        edge = get_edge(node_1, node_2)
+        if(edge != None):
+            return edge.weight
+        else:
+            return None
 
     def __get_node_index(self, node): # I'll implement this if I have time to rewrite
         """helper method to find node index"""
@@ -328,6 +357,15 @@ class ObjectOriented(object):
         else:
             return False
 
-    def distance(self, node_1, node_2):
-        pass
+    def get_edge(self, node_1, node_2): # returns edge without checking/comparing weight
+        for edge in self.edges:
+            if(edge.from_node == node_1 and edge.to_node == node_2):
+                return edge
+        return None
 
+    def distance(self, node_1, node_2):
+        edge = self.get_node(node_1, node_2)
+        if(edge != None):
+            return edge.weight
+        else:
+            return None # edges value is None... either way
