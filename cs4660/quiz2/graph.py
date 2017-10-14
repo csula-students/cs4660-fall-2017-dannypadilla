@@ -2,12 +2,6 @@
 from io import open
 from operator import itemgetter
 
-
-def graph_from_json(graph, json):
-    start = json
-    lineSplit = json.split()
-    
-
 def construct_graph_from_file(graph, file_path):
     openFile = open(file_path)
     readFile = openFile.read()
