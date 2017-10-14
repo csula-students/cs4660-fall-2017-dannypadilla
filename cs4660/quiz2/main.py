@@ -46,6 +46,21 @@ def distance(edge):
     else:
         return edge.weight
 
+def room_print_format(edge):
+    from_node_id = edge.from_node
+    to_node_id = edge.to_node
+    
+    from_node = get_state(from_node_id)
+    to_node = get_state(to_node_id)
+    
+    from_node_name = from_node['location']['name']
+    to_node_name = to_node['location']['name']
+    
+    weight = edge.weight
+    
+    print(from_node_name, "(", from_node_id, ") : ", to_node_name, "(", to_node_id, ") : ", weight )
+
+
 def get_state(room_id):
     """
     get the room by its id and its neighbor
@@ -75,11 +90,7 @@ def __json_request(target_url, body):
     response = json.load(reader(urlopen(req, jsondataasbytes)))
     return response
 
-if __name__ == "__main__":
-    # Your code starts here
-    initial_node_id = '7f3dc077574c013d98b2de8f735058b4'
-    dest_node_id = 'f1f131f647621a4be7c71292e79613f9'
-
+def bfs(initial_node_id, dest_node_id):
     initial_node = get_state(initial_node_id)
     dest_node = get_state(dest_node_id)
     
@@ -97,9 +108,11 @@ if __name__ == "__main__":
         current_node_id = current_node['id']
         
         if(current_node_id == dest_node_id):
-            path = get_path(current_node_id, distances, parents)
+            return get_path(current_node_id, distances, parents)
+        
         if(current_node_id not in explored_set):
             explored_set.append(current_node_id)
+            
         dist += 1
         for node in get_state(current_node_id)['neighbors']:
             node_id = node['id']
@@ -108,13 +121,23 @@ if __name__ == "__main__":
                 frontier.put(node)
                 distances[node_id] = dist
                 parents[node_id] = current_node_id
-    if(path == []):
-        print("No path")
-    else:
-        count = 1
-        for edge in path:
-            print("Path", count, edge)
-            count += 1
+    return False
+
+if __name__ == "__main__":
+    # Your code starts here
+    initial_node_id = '7f3dc077574c013d98b2de8f735058b4'
+    dest_node_id = 'f1f131f647621a4be7c71292e79613f9'
+
+    bfs_search = bfs(initial_node_id, dest_node_id)
+    
+    print("* BFS Path")
+    hp = 0
+    for edge in bfs_search:
+        room_print_format(edge)
+        hp += edge.weight
+
+    print("Total hp:", hp)
+    print("\n* Dijkstra")
 
     
 ############ TESTING ##############
