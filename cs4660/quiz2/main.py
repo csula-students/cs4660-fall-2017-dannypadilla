@@ -10,6 +10,7 @@ TODO: implement Dijkstra utilizing the path with highest effect number
 import json
 import codecs
 import graph
+from graph import Edge
 import searches
 import queue
 
@@ -21,6 +22,29 @@ except ImportError:
 
 GET_STATE_URL = "http://192.241.218.106:9000/getState"
 STATE_TRANSITION_URL = "http://192.241.218.106:9000/state"
+
+def get_path(current_node, distances_d, parents_d):
+    path = []
+    parent_node = parents_d[current_node]
+    while(parent_node != None):
+        distance =  distances_d[current_node] - distances_d[parent_node]
+        edge = Edge(parent_node, current_node, distance)
+        path.append(edge)
+        current_node = parent_node # for next loop
+        parent_node = parents_d[current_node]
+    
+    path.reverse()
+    return path
+
+def get_edge(from_node_id, to_node_id, edge):
+    weight = edge['event']['effect']
+    return Edge(from_node_id, to_node_id, weight)
+
+def distance(edge):
+    if(edge != type(Edge) ):
+        return edge['event']['effect']
+    else:
+        return edge.weight
 
 def get_state(room_id):
     """
@@ -58,60 +82,77 @@ if __name__ == "__main__":
 
     initial_node = get_state(initial_node_id)
     dest_node = get_state(dest_node_id)
-
+    
     frontier = queue.Queue()
     explored_set = []
-    distances = {initial_node['id']: 0}
-    parents = {initial_node['id']: None}
+    distances = {initial_node_id: 0}
+    parents = {initial_node_id: None}
     dist = 0
-
+    path = []
+    
     frontier.put(initial_node)
-
+    
     while(not frontier.empty() ):
         current_node = frontier.get()
         current_node_id = current_node['id']
-
+        
         if(current_node_id == dest_node_id):
-            print(get_path(current_node_id, distances, parents) )
+            path = get_path(current_node_id, distances, parents)
         if(current_node_id not in explored_set):
             explored_set.append(current_node_id)
         dist += 1
-        for node in current_node['neighbors']:
-            if(node['id'] not in explored_set):
-                explored_set.append(node['id'])
+        for node in get_state(current_node_id)['neighbors']:
+            node_id = node['id']
+            if(node_id not in explored_set):
+                explored_set.append(node_id)
                 frontier.put(node)
-                distances[node['id']] = dist
-                parents[node['id']] = current_node_id
-    print("No path")
-
-##### HELPER METHODS #####
-def get_path(current_node, distances_d, parents_d):
-    path = []
-    parent_node = parents_d[current_node]
-    while(parent_node != None):
-        distance =  distances_d[current_node] - distances_d[parent_node]
-        edge = g.Edge(parent_node, current_node, distance) # should distance be from parent to node OR initial to dest node?
-        path.append(edge) # create new EDGE or get from graph?
-        current_node = parent_node # for next loop
-        parent_node = parents_d[current_node]
-    
-    path.reverse()
-    return path
+                distances[node_id] = dist
+                parents[node_id] = current_node_id
+    if(path == []):
+        print("No path")
+    else:
+        count = 1
+        for edge in path:
+            print("Path", count, edge)
+            count += 1
 
     
 ############ TESTING ##############
-    room = get_state(initial_node_id)
-    room_id = room['id']
-    room_name = room['location']['name']
-    room_neighbors = room['neighbors']
-    
-    #print(transition_state(room['id'], room['neighbors'][0]['id']))
 
-    node = transition_state(room['id'], room['neighbors'][0]['id'])
-    id = node['id']
-    action = node['action']
-    event = node['event']
-    event_name = event['name']
-    event_desc = event['description']
-    event_effect = event['effect']
-    
+''' get_state testing '''
+room = get_state(initial_node_id) # state of node
+room_id = room['id'] # id of node
+room_name = room['location']['name'] # name of room
+room_neighbors = room['neighbors'] # list of neighbors of node
+#print(room_neighbors[0]['id'])
+
+# print("\nGet state of neighbors of room", room_id)
+# for node in room_neighbors:
+#     print(get_state(node['id']) )
+#     print()
+
+# print("\n\n")
+
+#print(transition_state(room['id'], room['neighbors'][0]['id']))
+
+''' transition_state testing '''
+
+# print("Transition state for", room_id)
+# for to_node in room_neighbors:
+#     to_node_id = to_node['id']
+#     edge = transition_state(room_id, to_node_id)
+#     weight = edge['event']['effect']
+#     print(transition_state(room_id, to_node['id'] ) ) # edge of node
+#     print(Edge(room_id, to_node_id, weight) )
+#     print()
+
+# print("\n\n")
+
+node_test = transition_state(room['id'], room['neighbors'][0]['id'])
+id = node_test['id']
+action = node_test['action']
+event = node_test['event']
+event_name = event['name']
+event_desc = event['description']
+event_effect = event['effect']
+weight = event_effect
