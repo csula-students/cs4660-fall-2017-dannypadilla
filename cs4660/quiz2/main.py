@@ -58,7 +58,6 @@ if __name__ == "__main__":
 
     initial_node = get_state(initial_node_id)
     dest_node = get_state(dest_node_id)
-    dest_node_id = dest_node['id']
 
     frontier = queue.Queue()
     explored_set = []
@@ -82,7 +81,7 @@ if __name__ == "__main__":
                 explored_set.append(node['id'])
                 frontier.put(node)
                 distances[node['id']] = dist
-                parents[node['id']] = current_node['id']
+                parents[node['id']] = current_node_id
     print("No path")
 
 ##### HELPER METHODS #####
