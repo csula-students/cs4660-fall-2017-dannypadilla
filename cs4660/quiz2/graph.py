@@ -2,18 +2,13 @@
 from io import open
 from operator import itemgetter
 
+
+def graph_from_json(graph, json):
+    start = json
+    lineSplit = json.split()
+    
+
 def construct_graph_from_file(graph, file_path):
-    """
-    TODO: read content from file_path, then add nodes and edges to graph object
-
-    note that grpah object will be either of AdjacencyList, AdjacencyMatrix or ObjectOriented
-
-    In example, you will need to do something similar to following:
-
-    1. add number of nodes to graph first (first line)
-    2. for each following line (from second line to last line), add them as edge to graph
-    3. return the graph
-    """
     openFile = open(file_path)
     readFile = openFile.read()
     splitReadFile = readFile.split("\n")

@@ -1,5 +1,5 @@
 import queue
-from graph import graph as g
+import graph
 
 def bfs(graph, initial_node, dest_node):
     frontier = queue.Queue()
@@ -31,13 +31,6 @@ def bfs(graph, initial_node, dest_node):
     return False # no path was found
 
 def dijkstra_search(graph, initial_node, dest_node):
-    """
-    Dijkstra Search
-    uses graph to do search from the initial_node to dest_node
-    returns a list of actions going from the initial node to dest_node
-    """
-    # priority queue
-
     frontier = queue.PriorityQueue()
     explored_set = []
     distances = {
