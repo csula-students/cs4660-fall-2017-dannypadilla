@@ -58,6 +58,7 @@ if __name__ == "__main__":
 
     initial_node = get_state(initial_node_id)
     dest_node = get_state(dest_node_id)
+    dest_node_id = dest_node['id']
 
     frontier = queue.Queue()
     explored_set = []
@@ -69,15 +70,16 @@ if __name__ == "__main__":
 
     while(not frontier.empty() ):
         current_node = frontier.get()
+        current_node_id = current_node['id']
 
-        if(current_node == dest_node):
-            print(get_path(current_node, distances, parents) )
-        if(current_node not in explored_set):
-            explored_set.append(current_node)
+        if(current_node_id == dest_node_id):
+            print(get_path(current_node_id, distances, parents) )
+        if(current_node_id not in explored_set):
+            explored_set.append(current_node_id)
         dist += 1
         for node in current_node['neighbors']:
-            if(node not in explored_set):
-                explored_set.append(node)
+            if(node['id'] not in explored_set):
+                explored_set.append(node['id'])
                 frontier.put(node)
                 distances[node['id']] = dist
                 parents[node['id']] = current_node['id']
