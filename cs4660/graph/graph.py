@@ -1,4 +1,4 @@
-"""
+b"""
 graph module defines the knowledge representations files
 
 A Graph has following methods:
@@ -72,6 +72,10 @@ class Node(object):
         return 'Node({})'.format(self.data)
 
     def __eq__(self, other_node):
+        if other_node == None:
+            return False
+        elif other_node.data == None: # added this as a helper
+            return False
         return self.data == other_node.data
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -91,6 +95,8 @@ class Edge(object):
         return 'Edge(from {}, to {}, weight {})'.format(self.from_node, self.to_node, self.weight)
 
     def __eq__(self, other_node):
+        if other_node == None:
+            return False
         return self.from_node == other_node.from_node and self.to_node == other_node.to_node and self.weight == other_node.weight
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -180,9 +186,9 @@ class AdjacencyList(object):
             return None
 
     def distance(self, node_1, node_2):
-        edge = get_edge(node_1, node_2)
+        edge = self.get_edge(node_1, node_2)
         if(edge != None):
-            return edge
+            return edge.weight
         else:
             return None
 
@@ -293,7 +299,7 @@ class AdjacencyMatrix(object):
             return None
         
     def distance(self, node_1, node_2):
-        edge = get_edge(node_1, node_2)
+        edge = self.get_edge(node_1, node_2)
         if(edge != None):
             return edge.weight
         else:
@@ -364,7 +370,7 @@ class ObjectOriented(object):
         return None
 
     def distance(self, node_1, node_2):
-        edge = self.get_node(node_1, node_2)
+        edge = self.get_edge(node_1, node_2)
         if(edge != None):
             return edge.weight
         else:
