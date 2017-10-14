@@ -61,8 +61,9 @@ if __name__ == "__main__":
 
     frontier = queue.Queue()
     explored_set = []
-    distances = {initial_node_id: 0}
-    parents = {initial_node_id: None}
+    distances = {initial_node['id']: 0}
+    parents = {initial_node['id']: None}
+    dist = 0
 
     frontier.put(initial_node)
 
@@ -73,17 +74,30 @@ if __name__ == "__main__":
             print(get_path(current_node, distances, parents) )
         if(current_node not in explored_set):
             explored_set.append(current_node)
+        dist += 1
         for node in current_node['neighbors']:
             if(node not in explored_set):
                 explored_set.append(node)
                 frontier.put(node)
-                #trans_state
-                #cn_event_effect = event_effect
-                distances[node] = distances[current_node['id']
-                parents[node] = current_node
+                distances[node['id']] = dist
+                parents[node['id']] = current_node['id']
     print("No path")
 
+##### HELPER METHODS #####
+def get_path(current_node, distances_d, parents_d):
+    path = []
+    parent_node = parents_d[current_node]
+    while(parent_node != None):
+        distance =  distances_d[current_node] - distances_d[parent_node]
+        edge = g.Edge(parent_node, current_node, distance) # should distance be from parent to node OR initial to dest node?
+        path.append(edge) # create new EDGE or get from graph?
+        current_node = parent_node # for next loop
+        parent_node = parents_d[current_node]
+    
+    path.reverse()
+    return path
 
+    
 ############ TESTING ##############
     room = get_state(initial_node_id)
     room_id = room['id']
@@ -100,16 +114,3 @@ if __name__ == "__main__":
     event_desc = event['description']
     event_effect = event['effect']
     
-
-def get_path(current_node, distances_d, parents_d):
-    path = []
-    parent_node = parents_d[current_node]
-    while(parent_node != None):
-        distance =  distances_d[current_node] - distances_d[parent_node]
-        edge = g.Edge(parent_node, current_node, distance) # should distance be from parent to node OR initial to dest node?
-        path.append(edge) # create new EDGE or get from graph?
-        current_node = parent_node # for next loop
-        parent_node = parents_d[current_node]
-    
-    path.reverse()
-    return path
