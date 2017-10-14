@@ -8,6 +8,9 @@ TODO: implement Dijkstra utilizing the path with highest effect number
 """
 
 import json
+import codecs
+import graph
+import searches
 
 # http lib import for Python 2 and 3: alternative 4
 try:
@@ -43,7 +46,8 @@ def __json_request(target_url, body):
     jsondata = json.dumps(body)
     jsondataasbytes = jsondata.encode('utf-8')   # needs to be bytes
     req.add_header('Content-Length', len(jsondataasbytes))
-    response = json.load(urlopen(req, jsondataasbytes))
+    reader = codecs.getreader("utf-8")
+    response = json.load(reader(urlopen(req, jsondataasbytes)))
     return response
 
 if __name__ == "__main__":
