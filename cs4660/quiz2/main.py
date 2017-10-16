@@ -123,9 +123,6 @@ def bfs(initial_node_id, dest_node_id):
                 effect_distance = event['event']['effect'] # calc distance with trans state
                 distances[node_id] = effect_distance
                 parents[node_id] = current_node_id
-                print("node id:",node_id)
-                print("distance:",effect_distance)
-                print("parent/current node id:", current_node_id)
     return False
 
 if __name__ == "__main__":
