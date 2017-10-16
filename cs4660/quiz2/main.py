@@ -165,14 +165,14 @@ if __name__ == "__main__":
     initial_node_id = '7f3dc077574c013d98b2de8f735058b4'
     dest_node_id = 'f1f131f647621a4be7c71292e79613f9'
 
-    # bfs_search = bfs(initial_node_id, dest_node_id)
+    bfs_search = bfs(initial_node_id, dest_node_id)
     
-    # print("* BFS Path")
-    # hp = 0
-    # for edge in bfs_search:
-    #     room_print_format(edge)
-    #     hp += edge.weight
-    # print("Total hp:", hp)
+    print("* BFS Path")
+    hp = 0
+    for edge in bfs_search:
+        room_print_format(edge)
+        hp += edge.weight
+    print("Total hp:", hp)
 
     dijk = dijkstra_search(initial_node_id, dest_node_id)
     print("\n* Dijkstra")
@@ -181,45 +181,3 @@ if __name__ == "__main__":
         room_print_format(edge)
         hp += edge.weight
     print("Total hp:", hp)
-    
-
-    
-############ TESTING ##############
-
-''' get_state testing '''
-room = get_state(initial_node_id) # state of node
-room_id = room['id'] # id of node
-room_name = room['location']['name'] # name of room
-room_neighbors = room['neighbors'] # list of neighbors of node
-#print(room_neighbors[0]['id'])
-
-# print("\nGet state of neighbors of room", room_id)
-# for node in room_neighbors:
-#     print(get_state(node['id']) )
-#     print()
-
-# print("\n\n")
-
-#print(transition_state(room['id'], room['neighbors'][0]['id']))
-
-''' transition_state testing '''
-
-# print("Transition state for", room_id)
-# for to_node in room_neighbors:
-#     to_node_id = to_node['id']
-#     edge = transition_state(room_id, to_node_id)
-#     weight = edge['event']['effect']
-#     print(transition_state(room_id, to_node['id'] ) ) # edge of node
-#     print(Edge(room_id, to_node_id, weight) )
-#     print()
-
-# print("\n\n")
-
-node_test = transition_state(room['id'], room['neighbors'][0]['id'])
-id = node_test['id']
-action = node_test['action']
-event = node_test['event']
-event_name = event['name']
-event_desc = event['description']
-event_effect = event['effect']
-weight = event_effect
