@@ -125,21 +125,63 @@ def bfs(initial_node_id, dest_node_id):
                 parents[node_id] = current_node_id
     return False
 
+def dijkstra_search(initial_node_id, dest_node_id):
+    initial_node = get_state(initial_node_id)
+    dest_node = get_state(dest_node_id)
+    
+    explored_set = []
+    frontier = queue.PriorityQueue()
+    distances = {initial_node_id: 0}
+    parents = {initial_node_id: None}
+    path = []
+
+    frontier.put( (0, initial_node_id ) )
+
+    while(not frontier.empty() ):
+        current_node_id = frontier.get()
+
+        if(current_node_id == dest_node_id):
+            return get_path(current_node_id, distances, parents)
+
+        if(current_node_id not in explored_set):
+            explored_set.append(current_node_id)
+            
+        for node in get_state(current_node_id)['neighbors']:
+            node_id = node['id']
+            
+            node_dist = transition_state(current_node_id, node_id)['event']['effect']
+            alt_dist = distances[current_node_id] + node_dist
+
+            if(node_id not in explored_set): # don't revisit explored rooms
+                explored_set.append(node_id)
+                if(node_id not in distances or alt_dist > distances[node_id] ):
+                    distances[node_id] = alt_dist
+                    frontier.put( (alt_dist, node_id ) )
+                    parents[node_id] = current_node_id
+    return False
+
 if __name__ == "__main__":
     # Your code starts here
     initial_node_id = '7f3dc077574c013d98b2de8f735058b4'
     dest_node_id = 'f1f131f647621a4be7c71292e79613f9'
 
-    bfs_search = bfs(initial_node_id, dest_node_id)
+    # bfs_search = bfs(initial_node_id, dest_node_id)
     
-    print("* BFS Path")
+    # print("* BFS Path")
+    # hp = 0
+    # for edge in bfs_search:
+    #     room_print_format(edge)
+    #     hp += edge.weight
+    # print("Total hp:", hp)
+
+    dijk = dijkstra_search(initial_node_id, dest_node_id)
+    print("\n* Dijkstra")
     hp = 0
-    for edge in bfs_search:
+    for edge in dijk:
         room_print_format(edge)
         hp += edge.weight
-
     print("Total hp:", hp)
-    print("\n* Dijkstra")
+    
 
     
 ############ TESTING ##############
