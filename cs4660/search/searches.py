@@ -65,17 +65,24 @@ def dijkstra_search(graph, initial_node, dest_node):
         initial_node: None
     }
 
-    frontier.put((initial_node, distances[initial_node]) )
+    frontier.put( (0, initial_node) )
 
     while( not frontier.empty() ):
-        current_node = frontier.get() # take node from queue
-        
+        tup_node = frontier.get()
+        current_node = tup_node[1] # take node from queue
+
+        if(current_node == dest_node):
+            return get_path(current_node, distances, parents)
+
         for node in graph.neighbors(current_node):
-            alt = distance[current_node] + graph.distance(current_node, node)
-            if(alt < distance[node]):
-                distance[node] = alt
-                frontier.put(node) # add child to queue
-                distances[node] = distances[current_node] + graph.distance(current_node, node) # calculate distance
+            
+            alt_dist = distances[current_node] + graph.distance(current_node, node)
+            
+            if(node not in distances or alt_dist < distances[node] ):
+                #explored_set.append(node)
+                distances[node] = alt_dist
+                frontier.put( (alt_dist, node) ) # add child to queue
+                #distances[node] = distances[current_node] + graph.distance(current_node, node) # calculate distance
                 parents[node] = current_node # assign parent to child
                 
     return False # no path was found
