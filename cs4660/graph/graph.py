@@ -79,6 +79,10 @@ class Node(object):
         return self.data == other_node.data
     def __ne__(self, other):
         return not self.__eq__(other)
+    def __lt__(self, other_node):
+        return self.data < other_node.data
+    def __gt__(self, other_node):
+        return self.data > other_node.data
 
     def __hash__(self):
         return hash(self.data)
