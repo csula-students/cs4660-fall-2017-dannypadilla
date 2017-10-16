@@ -98,7 +98,7 @@ def bfs(initial_node_id, dest_node_id):
     explored_set = []
     distances = {initial_node_id: 0}
     parents = {initial_node_id: None}
-    dist = 0
+    #dist = 0
     path = []
     
     frontier.put(initial_node)
@@ -113,14 +113,19 @@ def bfs(initial_node_id, dest_node_id):
         if(current_node_id not in explored_set):
             explored_set.append(current_node_id)
             
-        dist += 1
+        #dist += 1
         for node in get_state(current_node_id)['neighbors']:
             node_id = node['id']
             if(node_id not in explored_set):
                 explored_set.append(node_id)
                 frontier.put(node)
-                distances[node_id] = dist
+                event = transition_state(current_node_id, node_id) # get transition state
+                effect_distance = event['event']['effect'] # calc distance with trans state
+                distances[node_id] = effect_distance
                 parents[node_id] = current_node_id
+                print("node id:",node_id)
+                print("distance:",effect_distance)
+                print("parent/current node id:", current_node_id)
     return False
 
 if __name__ == "__main__":

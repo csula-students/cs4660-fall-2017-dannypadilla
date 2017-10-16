@@ -1,1 +1,10 @@
 https://github.com/csula-students/cs4660-fall-2017-dannypadilla/tree/quiz2/cs4660/quiz2
+
+* BFS Path
+Empty Room ( 7f3dc077574c013d98b2de8f735058b4 ) :  Dire Tombs ( 44dfaae131fa9d0a541c3eb790b57b00 ) :  0
+Dire Tombs ( 44dfaae131fa9d0a541c3eb790b57b00 ) :  Dire Tombs ( 15fd980b830cd4aa5d518e3df71aa6b1 ) :  0
+Dire Tombs ( 15fd980b830cd4aa5d518e3df71aa6b1 ) :  Chamber ( 83bb5112a32d2fe8790e7a9df8a152ae ) :  0
+Chamber ( 83bb5112a32d2fe8790e7a9df8a152ae ) :  Dark Room ( f1f131f647621a4be7c71292e79613f9 ) :  -30
+Total hp: -30
+
+* Dijkstra Path
