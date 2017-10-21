@@ -1,4 +1,4 @@
-"""
+b"""
 graph module defines the knowledge representations files
 
 A Graph has following methods:
@@ -72,9 +72,17 @@ class Node(object):
         return 'Node({})'.format(self.data)
 
     def __eq__(self, other_node):
+        if other_node == None:
+            return False
+        elif other_node.data == None: # added this as a helper
+            return False
         return self.data == other_node.data
     def __ne__(self, other):
         return not self.__eq__(other)
+    def __lt__(self, other_node):
+        return self.data < other_node.data
+    def __gt__(self, other_node):
+        return self.data > other_node.data
 
     def __hash__(self):
         return hash(self.data)
@@ -91,6 +99,8 @@ class Edge(object):
         return 'Edge(from {}, to {}, weight {})'.format(self.from_node, self.to_node, self.weight)
 
     def __eq__(self, other_node):
+        if other_node == None:
+            return False
         return self.from_node == other_node.from_node and self.to_node == other_node.to_node and self.weight == other_node.weight
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -169,6 +179,22 @@ class AdjacencyList(object):
             return False # edge doesn't exist in adj list, but fromNode does
         else:
             return False # fromNode doesn't exist in adj list
+
+    def get_edge(self, node_1, node_2): # returns edge without checking/comparing weight
+        if(node_1 in self.adjacency_list and node_2 in self.adjacency_list):
+            for edge in self.adjacency_list[node_1]:
+                if(edge.from_node == node_1 and edge.to_node == node_2):
+                    return edge
+            return None # didn't find adjacent nodes, though they did exist in list
+        else:
+            return None
+
+    def distance(self, node_1, node_2):
+        edge = self.get_edge(node_1, node_2)
+        if(edge != None):
+            return edge.weight
+        else:
+            return None
 
 class AdjacencyMatrix(object):
     def __init__(self):
@@ -264,6 +290,25 @@ class AdjacencyMatrix(object):
         else:
             return False
 
+    def get_edge(self, node_1, node_2): # returns edge without checking/comparing weight
+        if( (node_1 in self.nodes) and (node_2 in self.nodes) ):
+            from_node_index = self.nodes.index(node_1)
+            to_node_index = self.nodes.index(node_2)
+            weight = self.adjacency_matrix[from_node_index][to_node_index] # index must exist since if-statement checked..
+            if(weight > 0):
+                return Edge(node_1, node_2, weight) # creates an Edge object just for this, though they don't exists (aren't needed) in this class
+            else:
+                return None
+        else:
+            return None
+        
+    def distance(self, node_1, node_2):
+        edge = self.get_edge(node_1, node_2)
+        if(edge != None):
+            return edge.weight
+        else:
+            return None
+
     def __get_node_index(self, node): # I'll implement this if I have time to rewrite
         """helper method to find node index"""
         if(node in self.nodes):
@@ -278,10 +323,9 @@ class ObjectOriented(object):
         self.edges = []
         self.nodes = []
 
-    def adjacent(self, node_1, node_2): # passes test but clean this up.... 
+    def adjacent(self, node_1, node_2):
         for edge in self.edges:
-            if(edge.from_node == node_1 and edge.to_node == node_2 or
-            edge.from_node == node_2 and edge.to_node == node_1):
+            if(edge.from_node == node_1 and edge.to_node == node_2): # only checks one way now
                 return True
         return False
 
@@ -323,3 +367,15 @@ class ObjectOriented(object):
         else:
             return False
 
+    def get_edge(self, node_1, node_2): # returns edge without checking/comparing weight
+        for edge in self.edges:
+            if(edge.from_node == node_1 and edge.to_node == node_2):
+                return edge
+        return None
+
+    def distance(self, node_1, node_2):
+        edge = self.get_edge(node_1, node_2)
+        if(edge != None):
+            return edge.weight
+        else:
+            return None # edges value is None... either way
